@@ -41,7 +41,7 @@ resource "kubernetes_deployment" "wordpress" {
    namespace = kubernetes_namespace.wordpress.metadata.0.name
  }
  spec {
-   replicas = 5
+   replicas = 1
    selector {
      match_labels = local.wordpress_labels
    }
@@ -58,7 +58,7 @@ resource "kubernetes_deployment" "wordpress" {
          }
          env {
             name = "WORDPRESS_DB_HOST"
-            value = "mysql-service"
+            value = "mysql"
          }
          env {
              name = "WORDPRESS_DB_NAME"

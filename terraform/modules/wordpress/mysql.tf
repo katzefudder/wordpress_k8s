@@ -10,6 +10,27 @@ resource "kubernetes_secret" "mysql-pass" {
  type = "kubernetes.io/basic-auth"
 }
 
+resource "kubernetes_persistent_volume" "mysql" {
+  metadata {
+    name = "mysql-volume"
+    labels = {
+      "name" = "mysql-volume"
+    }
+  }
+  spec {
+    capacity = {
+      storage = "1Gi"
+    }
+    storage_class_name = "default"
+    access_modes = ["ReadWriteMany"]
+    persistent_volume_source {
+      host_path {
+        path = "/data"
+      }
+    }
+  }
+}
+
 resource "kubernetes_service" "mysql-service" {
  metadata {
    name = "mysql"
