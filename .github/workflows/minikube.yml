@@ -48,8 +48,8 @@ jobs:
     - name: start minikube
       id: minikube
       uses: medyagh/setup-minikube@master
-    - name: enable ingress
-      run: minikube addons enable ingress
+    #- name: enable ingress
+    #  run: minikube addons enable ingress
     - name: disable metrics-server
       run: minikube addons disable metrics-server
     - name: removing validation webhook
