@@ -10,9 +10,6 @@ resource "helm_release" "ingress-nginx" {
 }
 
 resource "kubernetes_ingress_v1" "grafana" {
-  depends_on = [
-    helm_release.ingress-nginx
-  ]
    metadata {
       name        = "grafana"
       namespace = "monitoring"
