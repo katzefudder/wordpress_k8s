@@ -1,9 +1,9 @@
-module "monitoring" {
-  source = "./modules/monitoring"
-}
-
 module "ingress" {
   source = "./modules/ingress"
+}
+
+module "monitoring" {
+  source = "./modules/monitoring"
 }
 
 module "wordpress" {
