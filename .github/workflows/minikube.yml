@@ -45,15 +45,10 @@ jobs:
       uses: actions/checkout@master
     - name: Install required Terraform & Terragrunt versions
       run: cd environments && tfenv install && tgenv install
-    - name: start minikube
-      id: minikube
-      uses: medyagh/setup-minikube@master
-    #- name: enable ingress
-    #  run: minikube addons enable ingress
-    - name: disable metrics-server
-      run: minikube addons disable metrics-server
-    #- name: removing validation webhook
-    #  run: kubectl delete  validatingwebhookconfigurations ingress-nginx-admission
+    - name: Install K3D
+      run: curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+    - name: Start K3D
+      run: k3d cluster create --api-port 6550 -p "80:80@loadbalancer" --k3s-arg="--disable=traefik@server:0"
     - name: 'Terragrunt Init'
       run: cd $tf_working_dir && terragrunt init
     - name: 'Terragrunt Apply'
