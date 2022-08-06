@@ -3,6 +3,7 @@ module "ingress" {
 }
 
 module "monitoring" {
+  depends_on = [module.ingress]
   source = "./modules/monitoring"
 }
 
