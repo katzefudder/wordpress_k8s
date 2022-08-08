@@ -2,7 +2,7 @@ resource "helm_release" "dashboard" {
   name             = "kubernetes-dashboard"
   repository       = "https://kubernetes.github.io/dashboard/"
   chart            = "kubernetes-dashboard"
-  namespace        = "kube-dashboard"
+  namespace        = "kube-system"
   create_namespace = true
   force_update     = true
   replace          = true
