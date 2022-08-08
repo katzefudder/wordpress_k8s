@@ -15,7 +15,7 @@ resource "helm_release" "dashboard" {
 resource "kubernetes_service_account" "example" {
   metadata {
     name = "admin-user"
-    namespace = "kube-dashboard"
+    namespace = "kube-system"
   }
 }
 
@@ -31,6 +31,6 @@ resource "kubernetes_cluster_role_binding" "example" {
   subject {
     kind      = "ServiceAccount"
     name      = "admin-user"
-    namespace = "kube-dashboard"
+    namespace = "kube-system"
   }
 }
