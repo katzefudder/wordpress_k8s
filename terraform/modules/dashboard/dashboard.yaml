@@ -1,0 +1,12 @@
+extraArgs:
+#  - --enable-skip-login
+  - --enable-insecure-login
+#  - --system-banner="Welcome to Kubernetes"
+
+service:
+  externalPort: 8080
+protocolHttp: true
+ingress:
+  enabled: true
+  path: /
+  host: dashboard.localhost
