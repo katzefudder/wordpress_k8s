@@ -1,8 +1,14 @@
+resource "kubernetes_namespace" "dashboard" {
+  metadata {
+    name = "kube-dashboard"
+  }
+}
+
 resource "helm_release" "dashboard" {
   name             = "kubernetes-dashboard"
   repository       = "https://kubernetes.github.io/dashboard/"
   chart            = "kubernetes-dashboard"
-  namespace        = "kube-system"
+  namespace        = kubernetes_namespace.dashboard.metadata.0.name
   create_namespace = true
   force_update     = true
   replace          = true
@@ -15,7 +21,7 @@ resource "helm_release" "dashboard" {
 resource "kubernetes_service_account" "example" {
   metadata {
     name = "admin-user"
-    namespace = "kube-system"
+    namespace = kubernetes_namespace.dashboard.metadata.0.name
   }
 }
 
@@ -31,6 +37,6 @@ resource "kubernetes_cluster_role_binding" "example" {
   subject {
     kind      = "ServiceAccount"
     name      = "admin-user"
-    namespace = "kube-system"
+    namespace = kubernetes_namespace.dashboard.metadata.0.name
   }
 }

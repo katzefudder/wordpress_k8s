@@ -9,7 +9,7 @@ resource "kubernetes_ingress_v1" "wordpress" {
    spec {
     ingress_class_name = "nginx"
       rule {
-        host = "localhost"
+        host = "wordpress.localhost"
         http {
          path {
            path = "/"

@@ -1,11 +1,9 @@
 extraArgs:
-#  - --enable-skip-login
+  - --enable-skip-login
   - --enable-insecure-login
-#  - --system-banner="Welcome to Kubernetes"
+  - --system-banner="Welcome to Kubernetes"
 
-service:
-  externalPort: 8080
-protocolHttp: true
+#protocolHttp: true
 ingress:
   enabled: true
   className: "nginx"
