@@ -8,5 +8,6 @@ service:
 protocolHttp: true
 ingress:
   enabled: true
+  className: "nginx"
   path: /
   host: dashboard.localhost
