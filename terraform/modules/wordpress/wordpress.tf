@@ -5,8 +5,11 @@ resource "kubernetes_namespace" "wordpress" {
 }
 
 resource "kubernetes_service" "wordpress-service" {
+  depends_on = [
+    kubernetes_service.mysql-service
+  ]
  metadata {
-   name = "wordpress-service"
+   name = "wordpress"
    namespace = kubernetes_namespace.wordpress.metadata.0.name
    labels = local.wordpress_labels
  }
@@ -55,7 +58,7 @@ resource "kubernetes_deployment" "wordpress" {
          }
          env {
             name = "WORDPRESS_DB_HOST"
-            value = "mysql-service"
+            value = "mysql"
          }
          env {
              name = "WORDPRESS_DB_NAME"

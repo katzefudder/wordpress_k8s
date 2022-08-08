@@ -1,4 +1,4 @@
-name: Deploying Wordpress with Prometheus monitoring and Grafana on Minikube
+name: Deploying Wordpress on Kubernetes
 on:
   - push
   - pull_request
@@ -35,7 +35,7 @@ jobs:
           tags: ghcr.io/katzefudder/openresty:latest
   Wordpress_on_Minikube:
     runs-on: ubuntu-latest
-    name: Wordpress on Minikube
+    name: Wordpress on Kubernetes
     steps:
     - name: Install tfenv
       run: git clone https://github.com/tfutils/tfenv.git ~/.tfenv && sudo rm /usr/local/bin/terraform && sudo ln -s ~/.tfenv/bin/* /usr/local/bin
@@ -45,18 +45,21 @@ jobs:
       uses: actions/checkout@master
     - name: Install required Terraform & Terragrunt versions
       run: cd environments && tfenv install && tgenv install
-    - name: start minikube
-      id: minikube
-      uses: medyagh/setup-minikube@master
-    - name: enable ingress
-      run: minikube addons enable ingress
-    - name: removing validation webhook
-      run: kubectl delete  validatingwebhookconfigurations ingress-nginx-admission
+    
+    #### K3D 
+    - name: Install K3D
+      run: wget -q -O - https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | TAG=v5.4.4 bash
+    - name: Start K3D
+      run: k3d cluster create --api-port 6550 -p "80:80@loadbalancer" --k3s-arg="--disable=traefik@server:0"
+    
+    #### Terraforming
     - name: 'Terragrunt Init'
       run: cd $tf_working_dir && terragrunt init
     - name: 'Terragrunt Apply'
       run: cd $tf_working_dir && terragrunt apply --auto-approve --input=false
+
+    #### Bit of debugging and testing
     - name: show running pods
       run: kubectl get pods -n dev-wordpress
     - name: test output
-      run: curl -v --fail --silent -IL $(minikube ip) | grep "HTTP/1.1 200 OK"
+      run: curl --fail --silent -IL localhost/wp-admin/install.php | grep "HTTP/1.1 200 OK"

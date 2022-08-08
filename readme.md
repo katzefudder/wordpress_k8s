@@ -1,63 +1,43 @@
-![Deploying Wordpress on Minikube](https://github.com/katzefudder/wordpress_minikube/workflows/Deploying%20Wordpress%20on%20Minikube/badge.svg)
+![Deploying Wordpress on K8s](https://github.com/katzefudder/wordpress_minikube/workflows/Deploying%20Wordpress%20on%20Kubernetes/badge.svg)
 
-# Wordpress on Kubernetes
+# Wordpress on Kubernetes - K3D
 
 Infrastructure as Code (IaC): Terraform & Terragrunt
-
-We are extensively using the Kubernetes Provider to talk to the Kubernetes API.
-Regarding Kubernetes, we're using Minikube for local demonstration. With a properly configured Kubernetes backend, this wordpress example is supposed to work as well.
-
-[Kubernetes Provider, Terraform](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs)
-
-## Minikube Hyperkit
-[Installation Manual](https://minikube.sigs.k8s.io/docs/drivers/hyperkit/)
+Regarding Kubernetes, I am using K3d as a local Kubernetes environment. Helm helps me to deploy a fully fledged Loki for logs, Prometheus and Grafana for monitoring.
 
 ## Terraform
 
-Using [Terraform](https://www.terraform.io), one is able to deliver infrastructure as code
+Using [Terraform](https://www.terraform.io), one is able to deliver infrastructure as code. With Terraform, I am able to control the whole stack and to keeping track of all changes within. I really like the convenience that Terraform offers when working on cloud-based infrastructure.
 
 ## Terragrunt
 
-### tfenv
+I'm using Terragrunt on top of Terraform to handle environments. You can have different environments, each with it's own configuration without repeating yourself (DRY).
 
-With **tfenv** you can keep track of what version of Terraform to work with. Simply install it on your Mac using *Brew*
+### tfenv and tgenv
 
-`brew install tfenv`
+With **tfenv** and **tgenv** I keep track of what version of Terraform and Terragrunt to work with. As I work on a Mac, I'm using *Brew* to install dependencies
 
-Install the appropriate version
+`brew install tfenv tgenv`
 
-`tfenv install`
+`tfenv install && tgenv install`
 
-## Terragrunt
+# Lightweight Kubernetes - K3D on Docker
 
-### tgenv
+All you need for having Kubernetes on your local machine is Docker, [k3d](https://k3d.io/v5.4.4/#installation) and Kubectl to interact with.
 
-With **tgenv** you can keep track of what version of Terragrunt to work with. Simply install it on your Mac using *Brew*
+## Disable Traefik for the sake of nginx
 
-`brew install tgenv`
+As I use nginx as my ingress controller, I needed to disable Traefik on K3D
+`k3d cluster create -p "80:80@loadbalancer" --k3s-arg="--disable=traefik@server:0"`
+This will also expose the Ingress on your localhost.
 
-Install the appropriate version
+When your k3d backed Kubernetes is ready, you're also ready to deploy the stack using Terragrunt.
 
-`tgenv install`
-
-### Installing Hyperkit on a Mac
-`brew install hyperkit`
-
-Start with hyperkit
-
-`minikube start --driver=hyperkit`
-
-Make hyperkit the default
-
-`minikube config set driver hyperkit`
-
-
-Get all Pods
-
-`kubectl get pods -n dev-wordpress`
-
-Expose Minikube to your host
-
-`minikube tunnel`
+`cd environment/dev && terragrunt apply -auto-approve`
 
 Your local Kubernetes based wordpress installation should now be available [here](http://localhost/wp-admin/install.php)
+
+## Dashboard
+
+Create a user token: `kubectl -n kube-dashboard create token admin-user`
+The Dashboard should also be available on port 8080.

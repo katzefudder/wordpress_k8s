@@ -10,9 +10,30 @@ resource "kubernetes_secret" "mysql-pass" {
  type = "kubernetes.io/basic-auth"
 }
 
+resource "kubernetes_persistent_volume" "mysql" {
+  metadata {
+    name = "mysql-volume"
+    labels = {
+      "name" = "mysql-volume"
+    }
+  }
+  spec {
+    capacity = {
+      storage = "1Gi"
+    }
+    storage_class_name = "default"
+    access_modes = ["ReadWriteMany"]
+    persistent_volume_source {
+      host_path {
+        path = "/data"
+      }
+    }
+  }
+}
+
 resource "kubernetes_service" "mysql-service" {
  metadata {
-   name = "mysql-service"
+   name = "mysql"
    namespace = kubernetes_namespace.wordpress.metadata.0.name
    labels = local.mysql_labels
  }
@@ -100,12 +121,18 @@ resource "kubernetes_stateful_set" "mysql" {
       }
 
       spec {
-        access_modes       = ["ReadWriteOnce"]
-        storage_class_name = "standard"
+        access_modes       = ["ReadWriteMany"]
+        storage_class_name = "default"
 
         resources {
           requests = {
             storage = "100Mi"
+          }
+        }
+
+        selector {
+          match_labels = {
+            name = "mysql-volume"
           }
         }
       }
