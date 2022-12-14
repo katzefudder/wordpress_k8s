@@ -20,6 +20,7 @@ resource "kubernetes_service" "wordpress-service" {
      port        = 8080
      target_port = 8080
    }
+   type = "LoadBalancer"
  }
 }
 
@@ -41,7 +42,7 @@ resource "kubernetes_deployment" "wordpress" {
    namespace = kubernetes_namespace.wordpress.metadata.0.name
  }
  spec {
-   replicas = 1
+   replicas = 3
    selector {
      match_labels = local.wordpress_labels
    }
@@ -54,6 +55,7 @@ resource "kubernetes_deployment" "wordpress" {
          image = "wordpress:php8.0-apache"
          name  = "wordpress"
          port {
+            name = "web"
             container_port = 80
          }
          env {
@@ -82,6 +84,7 @@ resource "kubernetes_deployment" "wordpress" {
          image = "ghcr.io/katzefudder/openresty:latest"
          name  = "openresty"
          port {
+            name = "monitoring"
             container_port = 8080
          }
          volume_mount {
