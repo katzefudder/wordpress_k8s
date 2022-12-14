@@ -1,8 +1,14 @@
 locals {
  wordpress_labels = {
-   App = "wordpress"
+   "app.kubernetes.io/name" = "wordpress"
+   prometheus = "true"
  }
  mysql_labels = {
-   App = "mysql"
+   "app.kubernetes.io/name" = "mysql"
  }
+}
+
+module "monitoring" {
+  source = "./monitoring"
+  namespace = "${var.stage}-wordpress"
 }
