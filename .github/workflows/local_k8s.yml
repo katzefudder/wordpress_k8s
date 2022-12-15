@@ -68,5 +68,7 @@ jobs:
     #### Bit of debugging and testing
     - name: show running pods
       run: kubectl get pods -n dev-wordpress
-    - name: test output
-      run: kubectl port-forward -n dev-wordpress svc/wordpress 8080 & && curl --fail --silent -IL localhost:8080/wp-admin/install.php | grep "HTTP/1.1 200 OK"
+    - name: port forwarding wordpress to localhost:8080
+      run: kubectl port-forward -n dev-wordpress svc/wordpress 8080 &
+    - name: testing output
+      run: curl --fail --silent -IL localhost:8080/wp-admin/install.php | grep "HTTP/1.1 200 OK"
