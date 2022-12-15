@@ -7,4 +7,8 @@ resource "helm_release" "ingress-nginx" {
   force_update     = true
   replace          = true
   atomic           = true
+  
+  values = [
+    "${file("${path.module}/templates/ingress-nginx-values.yaml")}"
+  ]
 }
