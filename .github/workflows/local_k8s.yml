@@ -41,6 +41,8 @@ jobs:
       run: git clone https://github.com/tfutils/tfenv.git ~/.tfenv && sudo rm /usr/local/bin/terraform && sudo ln -s ~/.tfenv/bin/* /usr/local/bin
     - name: Install tgenv
       run: git clone https://github.com/cunymatthieu/tgenv.git ~/.tgenv && sudo ln -s ~/.tgenv/bin/* /usr/local/bin
+    - name: Install helm
+      run: curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 && chmod 700 get_helm.sh && ./get_helm.sh && helm version
     - name: 'Checkout'
       uses: actions/checkout@master
     - name: Install required Terraform & Terragrunt versions
@@ -51,6 +53,11 @@ jobs:
       run: wget -q -O - https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | TAG=v5.4.4 bash
     - name: Start K3D
       run: k3d cluster create --api-port 6550 -p "80:80@loadbalancer" --k3s-arg="--disable=traefik@server:0"
+
+    #### Install kube-prometheus-stack https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack
+    # hack: for having CRDs available, install helm chart then remove right after
+    - name: Install kube-prometheus-stack helm chart
+      run: helm repo add prometheus-community https://prometheus-community.github.io/helm-charts && helm repo update && helm install prometheus-stack prometheus-community/kube-prometheus-stack && helm uninstall prometheus-stack
     
     #### Terraforming
     - name: 'Terragrunt Init'
