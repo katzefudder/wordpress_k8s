@@ -6,3 +6,7 @@ variable "namespace" {
     type = string
     default = "wordpress"
 }
+
+variable "hostname" {
+  type = string
+}

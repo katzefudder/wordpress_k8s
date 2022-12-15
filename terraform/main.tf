@@ -13,6 +13,7 @@ module "wordpress" {
   ]
   source = "./modules/wordpress"
   stage = var.stage
+  hostname = var.hostname
 }
 
 module "dashboard" {

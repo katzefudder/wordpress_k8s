@@ -13,7 +13,7 @@ resource "kubernetes_ingress_v1" "wordpress" {
    spec {
     ingress_class_name = "nginx"
       rule {
-        host = "azure.katzefudder.de"
+        host = var.hostname
         http {
          path {
            path = "/"
