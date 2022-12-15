@@ -1,3 +1,4 @@
 {
-    "environment": "dev"
+    "environment": "dev",
+    "hostname": "wordpress.localhost"
 }
