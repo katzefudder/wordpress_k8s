@@ -69,4 +69,4 @@ jobs:
     - name: show running pods
       run: kubectl get pods -n dev-wordpress
     - name: test output
-      run: curl --fail --silent -IL localhost/wp-admin/install.php | grep "HTTP/1.1 200 OK"
+      run: kubectl port-forward -n dev-wordpress svc/wordpress 8080 & && curl --fail --silent -IL localhost:8080/wp-admin/install.php | grep "HTTP/1.1 200 OK"
