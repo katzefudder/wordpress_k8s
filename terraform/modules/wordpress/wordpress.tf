@@ -52,7 +52,7 @@ resource "kubernetes_deployment" "wordpress" {
      }
      spec {
        container {
-         image = "wordpress:php8.0-apache"
+         image = "ghcr.io/katzefudder/wordpress:latest"
          name  = "wordpress"
          port {
             name = "web"
