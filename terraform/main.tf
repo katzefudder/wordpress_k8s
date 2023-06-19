@@ -8,9 +8,6 @@ module "ingress" {
 }
 
 module "wordpress" {
-  depends_on = [
-    module.monitoring
-  ]
   source = "./modules/wordpress"
   stage = var.stage
   hostname = var.hostname

@@ -9,6 +9,6 @@ resource "helm_release" "ingress-nginx" {
   atomic           = true
   
   values = [
-    "${file("${path.module}/templates/ingress-nginx-values.yaml")}"
+    file("${path.module}/templates/ingress-nginx-values.yaml")
   ]
 }

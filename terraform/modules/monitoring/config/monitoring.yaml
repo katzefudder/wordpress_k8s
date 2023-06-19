@@ -55,7 +55,7 @@ grafana:
         access: proxy
       - name: Prometheus
         type: prometheus
-        url: http://prometheus-community-kube-prometheus.monitoring:9090/
+        url: http://kube-prometheus-stack-prometheus.monitoring:9090/
         access: proxy
   adminUser: admin
   adminPassword: a12sdf

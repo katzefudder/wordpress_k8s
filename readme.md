@@ -31,6 +31,11 @@ As I use nginx as my ingress controller, I needed to disable Traefik on K3D.
 The cluster's load balancer will be available via ports 80 and 443
 `k3d cluster create -p "80:80@loadbalancer" -p "443:443@loadbalancer" --k3s-arg="--disable=traefik@server:0"`
 
+For the sake of having some ears and eyes for what's going on there on our cluster, we need some monitoring:
+
+Install [Kube Prometheus Stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack) for cluster monitoring.
+`helm install -n monitoring -f terraform/modules/monitoring/config/monitoring.yaml kube-prometheus-stack  prometheus-community/kube-prometheus-stack`
+
 When your k3d backed Kubernetes is ready, you're also ready to deploy the stack using Terragrunt.
 
 `cd environment/dev && terragrunt apply -auto-approve`

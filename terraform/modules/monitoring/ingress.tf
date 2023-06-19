@@ -1,7 +1,7 @@
 resource "kubernetes_ingress_v1" "grafana" {
    metadata {
       name        = "grafana"
-      namespace = kubernetes_namespace.monitoring.metadata[0].name
+      namespace = data.kubernetes_namespace.monitoring.metadata[0].name
       annotations = {
         "nginx.ingress.kubernetes.io/rewrite-target" = "/"
       }
@@ -16,7 +16,7 @@ resource "kubernetes_ingress_v1" "grafana" {
            path_type = "Prefix"
            backend {
              service {
-               name = "prometheus-community-grafana"
+               name = "kube-prometheus-stack-grafana"
                port {
                  name = "http-web"
                }
@@ -31,7 +31,7 @@ resource "kubernetes_ingress_v1" "grafana" {
 resource "kubernetes_ingress_v1" "prometheus" {
    metadata {
       name        = "prometheus"
-      namespace = kubernetes_namespace.monitoring.metadata[0].name
+      namespace = data.kubernetes_namespace.monitoring.metadata[0].name
       annotations = {
         "nginx.ingress.kubernetes.io/rewrite-target" = "/"
       }
@@ -46,7 +46,7 @@ resource "kubernetes_ingress_v1" "prometheus" {
            path_type = "Prefix"
            backend {
              service {
-               name = "prometheus-community-kube-prometheus"
+               name = "kube-prometheus-stack-prometheus"
                port {
                  name = "http-web"
                }

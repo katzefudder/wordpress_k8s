@@ -66,7 +66,10 @@ jobs:
     # hack: for having CRDs available, install helm chart then remove right after
     - name: Install kube-prometheus-stack helm chart
       run: helm repo add prometheus-community https://prometheus-community.github.io/helm-charts && helm repo update && helm install prometheus-stack prometheus-community/kube-prometheus-stack && helm uninstall prometheus-stack
-    
+
+    - name: Create monitoring namespace
+      run: kubectl create ns monitoring
+
     #### Terraforming
     - name: 'Terragrunt Init'
       run: cd $tf_working_dir && terragrunt init
