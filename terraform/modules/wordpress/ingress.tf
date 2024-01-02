@@ -1,7 +1,7 @@
 resource "kubernetes_ingress_v1" "wordpress" {
    metadata {
       name        = "wordpress"
-      namespace = kubernetes_namespace.wordpress.metadata.0.name
+      namespace = var.namespace
       annotations = {
         "nginx.ingress.kubernetes.io/rewrite-target" = "/"
         "nginx.ingress.kubernetes.io/affinity" = "cookie"
