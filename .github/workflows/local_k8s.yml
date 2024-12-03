@@ -41,7 +41,7 @@ jobs:
           file: docker/Dockerfile_wordpress
           push: true
           tags: ghcr.io/katzefudder/wordpress:latest
-  Wordpress_on_Minikube:
+  Wordpress_on_Kubernetes:
     runs-on: ubuntu-latest
     name: Wordpress on Kubernetes
     steps:
@@ -53,8 +53,6 @@ jobs:
       uses: actions/checkout@master
     - name: Install required Terraform & Terragrunt versions
       run: |
-        echo $GITHUB_PATH
-        ls -la /usr/local/bin
         cd environments && /usr/local/bin/tenv tf install && /usr/local/bin/tenv tg install
     
     #### K3D 
