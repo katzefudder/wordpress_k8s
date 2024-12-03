@@ -47,7 +47,7 @@ jobs:
     steps:
     - name: Install dependencies
       run: |
-        mkdir tenv && wget https://github.com/tofuutils/tenv/releases/download/v3.2.10/tenv_v3.2.10_Linux_x86_64.tar.gz -O tenv.tar.gz && tar xzf tenv.tar.gz -C tenv && sudo ln -sf $(pwd)/tenv/* /usr/local/bin
+        mkdir tenv && wget https://github.com/tofuutils/tenv/releases/download/v3.2.10/tenv_v3.2.10_Linux_x86_64.tar.gz -O tenv.tar.gz && tar xzf tenv.tar.gz -C tenv && sudo ln -sf $(pwd)/tenv/* /usr/local/bin && echo "/usr/local/bin" >> $GITHUB_PATH
         curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 && chmod 700 get_helm.sh && ./get_helm.sh && helm version
     - name: 'Checkout'
       uses: actions/checkout@master
