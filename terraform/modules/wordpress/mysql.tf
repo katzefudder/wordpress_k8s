@@ -1,7 +1,7 @@
 resource "kubernetes_secret" "mysql-pass" {
  metadata {
    name = "mysql-pass"
-   namespace = kubernetes_namespace.wordpress.metadata.0.name
+   namespace = var.namespace
  }
  data = {
    password = "root"
@@ -34,7 +34,7 @@ resource "kubernetes_persistent_volume" "mysql" {
 resource "kubernetes_service" "mysql-service" {
  metadata {
    name = "mysql"
-   namespace = kubernetes_namespace.wordpress.metadata.0.name
+   namespace = var.namespace
    labels = local.mysql_labels
  }
  spec {
@@ -57,7 +57,7 @@ resource "kubernetes_stateful_set" "mysql" {
   metadata {
    name = "mysql"
    labels = local.mysql_labels
-   namespace = kubernetes_namespace.wordpress.metadata.0.name
+   namespace = var.namespace
  }
   spec {
     replicas = 1
@@ -98,7 +98,7 @@ resource "kubernetes_stateful_set" "mysql" {
             mount_path = "/var/lib/mysql"
           }
         }
-
+/*
         container {
           image = "prom/mysqld-exporter"
           name = "mysql-exporter"
@@ -110,7 +110,7 @@ resource "kubernetes_stateful_set" "mysql" {
             value = "root:root@(localhost:3306)/wordpress"
           }
         }
-
+*/
         termination_grace_period_seconds = 10
       }
     }

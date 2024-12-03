@@ -1,16 +1,10 @@
-resource "kubernetes_namespace" "wordpress" {
-  metadata {
-    name = "${var.stage}-wordpress"
-  }
-}
-
 resource "kubernetes_service" "wordpress-service" {
   depends_on = [
     kubernetes_service.mysql-service
   ]
  metadata {
    name = "wordpress"
-   namespace = kubernetes_namespace.wordpress.metadata.0.name
+   namespace = var.namespace
    labels = local.wordpress_labels
  }
  spec {
@@ -27,7 +21,7 @@ resource "kubernetes_service" "wordpress-service" {
 resource "kubernetes_config_map" "openresty-proxy-conf" {
   metadata {
     name      = "openresty-proxy-conf"
-    namespace = kubernetes_namespace.wordpress.metadata.0.name
+    namespace = var.namespace
   }
 
   data = {
@@ -39,7 +33,7 @@ resource "kubernetes_deployment" "wordpress" {
  metadata {
    name = "wordpress"
    labels = local.wordpress_labels
-   namespace = kubernetes_namespace.wordpress.metadata.0.name
+   namespace = var.namespace
  }
  spec {
    replicas = 3

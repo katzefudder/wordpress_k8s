@@ -10,5 +10,5 @@ locals {
 
 module "monitoring" {
   source = "./monitoring"
-  namespace = "${var.stage}-wordpress"
+  namespace = var.namespace
 }

@@ -1,7 +1,7 @@
 resource "kubernetes_ingress_v1" "grafana" {
    metadata {
       name        = "grafana"
-      namespace = data.kubernetes_namespace.monitoring.metadata[0].name
+      namespace = var.namespace
       annotations = {
         "nginx.ingress.kubernetes.io/rewrite-target" = "/"
       }
@@ -31,7 +31,7 @@ resource "kubernetes_ingress_v1" "grafana" {
 resource "kubernetes_ingress_v1" "prometheus" {
    metadata {
       name        = "prometheus"
-      namespace = data.kubernetes_namespace.monitoring.metadata[0].name
+      namespace = var.namespace
       annotations = {
         "nginx.ingress.kubernetes.io/rewrite-target" = "/"
       }
