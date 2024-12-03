@@ -45,8 +45,8 @@ jobs:
     runs-on: ubuntu-latest
     name: Wordpress on Kubernetes
     steps:
-    - name: Install tfenv
-      run: wget https://github.com/tofuutils/tenv/releases/download/v3.2.10/tenv_v3.2.10_Linux_x86_64.tar.gz -O tenv.tar.gz && tar xzf tenv.tar.gz && sudo ln -s $(pwd)/tenv /usr/local/bin
+    - name: Install tenv
+      run: mkdir tenv && wget https://github.com/tofuutils/tenv/releases/download/v3.2.10/tenv_v3.2.10_Linux_x86_64.tar.gz -O tenv.tar.gz && tar xzf tenv.tar.gz -C tenv && sudo ln -s $(pwd)/tenv/* /usr/local/bin
     - name: Install helm
       run: curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 && chmod 700 get_helm.sh && ./get_helm.sh && helm version
     - name: 'Checkout'
