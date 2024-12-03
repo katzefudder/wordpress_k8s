@@ -52,7 +52,10 @@ jobs:
     - name: 'Checkout'
       uses: actions/checkout@master
     - name: Install required Terraform & Terragrunt versions
-      run: cd environments && /usr/local/bin/tenv tf install && /usr/local/bin/tenv tg install
+      run: |
+        echo $GITHUB_PATH
+        ls -la /usr/local/bin
+        cd environments && /usr/local/bin/tenv tf install && /usr/local/bin/tenv tg install
     
     #### K3D 
     - name: Install K3D
