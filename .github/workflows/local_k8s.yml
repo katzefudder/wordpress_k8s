@@ -41,9 +41,10 @@ jobs:
           file: docker/Dockerfile_wordpress
           push: true
           tags: ghcr.io/katzefudder/wordpress:latest
-  Wordpress_on_Kubernetes:
+  deploy-wordpress-on-kubernetes:
     runs-on: ubuntu-latest
-    name: Wordpress on Kubernetes
+    needs: build-and-push-image
+    name: Deploying Wordpress on Kubernetes
     steps:
     - name: Install dependencies
       run: |
